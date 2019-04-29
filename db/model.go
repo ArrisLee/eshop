@@ -36,7 +36,7 @@ func init() {
 	CTX, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	var err error
-	Client, err = mongo.Connect(CTX, options.Client().ApplyURI("mongodb+srv://lindsay:6666666666@arris-wn60t.mongodb.net/test"))
+	Client, err = mongo.Connect(CTX, options.Client().ApplyURI(mongoURI))
 	if err != nil {
 		log.Fatal("data base connection failed")
 	}
