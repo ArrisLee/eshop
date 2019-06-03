@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const mongoURI = "mongodb+srv://lindsay:6666666666@arris-wn60t.mongodb.net/test"
+const mongoURI = "mongodb+srv://arris:871102@arris-wn60t.mongodb.net/test"
 
 var (
 	CTX    context.Context
