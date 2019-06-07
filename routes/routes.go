@@ -16,7 +16,8 @@ func Run() {
 	e.Use(middleware.CORS())
 	e.Use(middleware.Recover())
 	// Routes
-	e.POST("/api/v1/user", controller.Register)
+	e.POST("/api/v1/user/register", controller.Register)
+	e.POST("/api/v1/user/login", controller.Login)
 	e.GET("/api/v1/products", controller.GetProducts)
 	// Start server
 	e.Logger.Fatal(e.Start(":8500"))

@@ -14,7 +14,7 @@ func CreateTestProduct(c echo.Context) error {
 	product.Name = "Apples"
 	product.Img = "https://a.fsimg.co.nz/product/retail/fan/image/400x400/5046525.png"
 	product.Price = 2.99
-	product.Desc = "Your everyday fresh vegetables and fruits delivery service."
+	product.Desc = "Your everyday fresh fruits delivery service."
 	if _, err := db.AddProduct(product); err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}

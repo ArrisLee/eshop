@@ -1,11 +1,62 @@
 package controller
 
-import "github.com/labstack/echo"
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"errors"
+	"net/http"
+
+	"eshop/db"
+
+	"github.com/labstack/echo"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"golang.org/x/crypto/bcrypt"
+)
+
+type request struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	Password string `json:"password"`
+}
 
 func Register(c echo.Context) error {
-	return nil
+	req := &request{}
+	if err := c.Bind(req); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	if req.Name == "" || req.Email == "" || req.Password == "" {
+		return c.JSON(http.StatusBadRequest, errors.New("invalid parameters"))
+	}
+	hashedBytes, _ := bcrypt.GenerateFromPassword([]byte(req.Password), 14)
+	hasher := md5.New()
+	hasher.Write(hashedBytes)
+	token := hex.EncodeToString(hasher.Sum(nil))
+	customer := &db.Customer{}
+	customer.ID = primitive.NewObjectID()
+	customer.Email = req.Email
+	customer.Password = req.Password
+	customer.Name = req.Name
+	customer.Phone = req.Phone
+	customer.Token = token
+	if err := db.AddCustomer(customer); err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusCreated, "success")
 }
 
 func Login(c echo.Context) error {
-	return nil
+	req := &request{}
+	if err := c.Bind(req); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	if req.Email == "" || req.Password == "" {
+		return c.JSON(http.StatusBadRequest, errors.New("invalid parameters"))
+	}
+	customer, err := db.Authenticate(req.Email, req.Password)
+	if err != nil {
+		return c.JSON(http.StatusForbidden, err.Error())
+	}
+	customer.Password = ""
+	return c.JSON(http.StatusOK, customer)
 }

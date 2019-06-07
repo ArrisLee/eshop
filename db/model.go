@@ -33,6 +33,7 @@ type Customer struct {
 	Password string             `json:"password" bson:"password"`
 	Email    string             `json:"email" bson:"email"`
 	Phone    string             `json:"phone" bson:"phone"`
+	Token    string             `json:"token" bson:"token"`
 }
 
 func init() {
