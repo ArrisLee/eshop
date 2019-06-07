@@ -21,15 +21,18 @@ var (
 type Product struct {
 	ID    primitive.ObjectID `json:"id" bson:"_id"`
 	Name  string             `json:"name" bson:"name"`
-	Pic   string             `json:"pic" bson:"pic"`
-	Price float32            `json:"price" bson:"price"`
+	Desc  string             `json:"desc" bson:"desc"`
+	Img   string             `json:"img" bson:"img"`
+	Price float64            `json:"price" bson:"price"`
 }
 
 //Customer struct
 type Customer struct {
-	ID    primitive.ObjectID `json:"id" bson:"_id"`
-	Name  string             `json:"name" bson:"name"`
-	Phone string             `json:"phone" bson:"phone"`
+	ID       primitive.ObjectID `json:"id" bson:"_id"`
+	Name     string             `json:"name" bson:"name"`
+	Password string             `json:"password" bson:"password"`
+	Email    string             `json:"email" bson:"email"`
+	Phone    string             `json:"phone" bson:"phone"`
 }
 
 func init() {
@@ -38,6 +41,6 @@ func init() {
 	var err error
 	Client, err = mongo.Connect(CTX, options.Client().ApplyURI(mongoURI))
 	if err != nil {
-		log.Fatal("data base connection failed")
+		log.Fatal(err.Error())
 	}
 }

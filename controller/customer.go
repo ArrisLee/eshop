@@ -1,11 +1,11 @@
 package controller
 
-import "github.com/gin-gonic/gin"
+import "github.com/labstack/echo"
 
-func Register(c *gin.Context) {
-
+func Register(c echo.Context) error {
+	return nil
 }
 
-func Login(c *gin.Context) {
-
+func Login(c echo.Context) error {
+	return nil
 }

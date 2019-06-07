@@ -9,11 +9,6 @@ import (
 //AddProduct func
 func AddProduct(product *Product) (*Product, error) {
 	collection := Client.Database("eshop").Collection("products")
-	// p := Product{}
-	// p.ID = primitive.NewObjectID()
-	// p.Name = "haha"
-	// p.Pic = "lala"
-	// p.Price = 111.1
 	_, err := collection.InsertOne(CTX, product)
 	if err != nil {
 		return nil, err
@@ -21,6 +16,7 @@ func AddProduct(product *Product) (*Product, error) {
 	return product, nil
 }
 
+//ReadAllProducts func
 func ReadAllProducts() ([]*Product, error) {
 	var products []*Product
 	collection := Client.Database("eshop").Collection("products")

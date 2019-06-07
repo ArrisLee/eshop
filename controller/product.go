@@ -2,45 +2,29 @@ package controller
 
 import (
 	"eshop/db"
+	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func CreateTestProduct(c *gin.Context) {
+func CreateTestProduct(c echo.Context) error {
 	product := &db.Product{}
 	product.ID = primitive.NewObjectID()
-	product.Name = "Switch"
-	product.Pic = "https://www.pbtech.co.nz/imgprod/G/A/GAMNTD1003__1.jpg"
-	product.Price = 499.9
+	product.Name = "Apples"
+	product.Img = "https://a.fsimg.co.nz/product/retail/fan/image/400x400/5046525.png"
+	product.Price = 2.99
+	product.Desc = "Your everyday fresh vegetables and fruits delivery service."
 	if _, err := db.AddProduct(product); err != nil {
-		c.JSON(500, gin.H{"data": err.Error()})
-		return
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	c.JSON(201, gin.H{"data": product})
+	return c.JSON(http.StatusCreated, product)
 }
 
-func GetAllProducts(c *gin.Context) {
-	// product := db.Product{}
-	// product.ID = "5caef7f7042eb13e827ec928"
-	// product.Name = "Switch"
-	// product.Pic = "https://www.pbtech.co.nz/imgprod/G/A/GAMNTD1003__1.jpg"
-	// product.Price = 499.9
-	// productTwo := db.Product{}
-	// productTwo.ID = "5caef7f7042eb13e827ec927"
-	// productTwo.Name = "Play Station 4"
-	// productTwo.Pic = "https://www.pbtech.co.nz/imgprod/G/A/GAMSNY4703__1.jpg"
-	// productTwo.Price = 588.8
-	// productThree := db.Product{}
-	// productThree.ID = "5caef7f7042eb13e827ec926"
-	// productThree.Name = "Xbox ONE"
-	// productThree.Pic = "https://www.pbtech.co.nz/thumbs/G/A/GAMMST14014.jpg.large.jpg"
-	// productThree.Price = 521.9
-	// prodcuts := []db.Product{product, productTwo, productThree}
+func GetProducts(c echo.Context) error {
 	products, err := db.ReadAllProducts()
 	if err != nil {
-		c.JSON(500, gin.H{"data": err.Error()})
-		return
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	c.JSON(200, gin.H{"data": products})
+	return c.JSON(http.StatusOK, products)
 }
