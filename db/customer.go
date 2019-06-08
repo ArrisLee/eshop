@@ -1,18 +1,25 @@
 package db
 
 import (
-	"log"
+	"errors"
 
 	"golang.org/x/crypto/bcrypt"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+// var collection *mongo.Collection
+
+// func init() {
+// 	collection := Client.Database("eshop").Collection("customers")
+// }
+
 //AddCustomer func
 func AddCustomer(customer *Customer) error {
-	//to-do need to set email as unique index
-	collection := Client.Database("eshop").Collection("customers")
-	_, err := collection.InsertOne(CTX, customer)
+	if _, err := readCustomerByEmail(customer.Email); err == nil {
+		return errors.New("user already exists")
+	}
+	_, err := DB.Collection("customers").InsertOne(CTX, customer)
 	if err != nil {
 		return err
 	}
@@ -21,11 +28,8 @@ func AddCustomer(customer *Customer) error {
 
 //Authenticate func
 func Authenticate(email, password string) (*Customer, error) {
-	log.Println(email, password)
-	customer := &Customer{}
-	collection := Client.Database("eshop").Collection("customers")
-	query := bson.M{"email": email}
-	if err := collection.FindOne(CTX, query).Decode(customer); err != nil {
+	customer, err := readCustomerByEmail(email)
+	if err != nil {
 		return nil, err
 	}
 	if err := bcrypt.CompareHashAndPassword([]byte(customer.Password), []byte(password)); err != nil {
@@ -34,12 +38,12 @@ func Authenticate(email, password string) (*Customer, error) {
 	return customer, nil
 }
 
-// func HashPassword(password string) (string, error) {
-// 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-// 	return string(bytes), err
-// }
-
-// func CheckPasswordHash(password, hash string) bool {
-// 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-// 	return err == nil
-// }
+//check customer email occupied
+func readCustomerByEmail(email string) (*Customer, error) {
+	customer := &Customer{}
+	query := bson.M{"email": email}
+	if err := DB.Collection("customers").FindOne(CTX, query).Decode(customer); err != nil {
+		return nil, err
+	}
+	return customer, nil
+}

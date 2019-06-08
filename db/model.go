@@ -13,8 +13,11 @@ import (
 const mongoURI = "mongodb+srv://arris:871102@arris-wn60t.mongodb.net/test"
 
 var (
-	CTX    context.Context
-	Client *mongo.Client
+	//CTX shared
+	CTX context.Context
+	//DB shared
+	DB *mongo.Database
+	// Client *mongo.Client
 )
 
 //Product struct
@@ -39,9 +42,9 @@ type Customer struct {
 func init() {
 	CTX, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	var err error
-	Client, err = mongo.Connect(CTX, options.Client().ApplyURI(mongoURI))
+	client, err := mongo.Connect(CTX, options.Client().ApplyURI(mongoURI))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+	DB = client.Database("eshop")
 }
