@@ -35,7 +35,7 @@ func Register(c echo.Context) error {
 	customer := &db.Customer{}
 	customer.ID = primitive.NewObjectID()
 	customer.Email = req.Email
-	customer.Password = req.Password
+	customer.Password = string(hashedBytes)
 	customer.Name = req.Name
 	customer.Phone = req.Phone
 	customer.Token = token
