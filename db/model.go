@@ -17,7 +17,6 @@ var (
 	CTX context.Context
 	//DB shared
 	DB *mongo.Database
-	// Client *mongo.Client
 )
 
 //Product struct
