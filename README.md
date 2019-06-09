@@ -14,9 +14,9 @@
 
 6. create order API
 
-7. attempt payment API
+7. create cart API
 
-8. verify payment result API
+8. make payment API
 
 9. retrieve all orders via userID API
 
