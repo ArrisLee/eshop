@@ -18,8 +18,8 @@
 
 8. make payment API
 
-9. retrieve all orders via userID API
+9. retrieve all orders via customerID API
 
 10. generate order confirmation E-mail API
 
-11. retrieve payment results via userID API
+11. retrieve payment results via customerID API
