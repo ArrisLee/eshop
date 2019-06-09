@@ -15,6 +15,9 @@ type cartRequest struct {
 
 //CreateCart func
 func CreateCart(c echo.Context) error {
+	if !Authorize(c) {
+		return c.JSON(http.StatusUnauthorized, "forbidden")
+	}
 	req := &cartRequest{}
 	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())

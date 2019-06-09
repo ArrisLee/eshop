@@ -1,11 +1,13 @@
 package controller
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/labstack/echo"
+)
 
-func CreateOrder(c *gin.Context) {
-
+func CreateOrder(c echo.Context) error {
+	return nil
 }
 
-func GetOrders(c *gin.Context) {
-
+func GetOrders(c echo.Context) error {
+	return nil
 }

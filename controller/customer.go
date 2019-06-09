@@ -62,3 +62,14 @@ func Login(c echo.Context) error {
 	customer.Password = ""
 	return c.JSON(http.StatusOK, customer)
 }
+
+//Authorize func
+func Authorize(c echo.Context) bool {
+	id := c.Request().Header.Get("id")
+	token := c.Request().Header.Get("token")
+	customerID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return false
+	}
+	return db.Authorize(customerID, token)
+}

@@ -3,6 +3,8 @@ package db
 import (
 	"errors"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
 	"golang.org/x/crypto/bcrypt"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -30,6 +32,16 @@ func Authenticate(email, password string) (*Customer, error) {
 		return nil, err
 	}
 	return customer, nil
+}
+
+//Authorize func
+func Authorize(customerID primitive.ObjectID, token string) bool {
+	customer := &Customer{}
+	query := bson.M{"_id": customerID, "token": token}
+	if err := DB.Collection("customers").FindOne(CTX, query).Decode(customer); err != nil {
+		return false
+	}
+	return true
 }
 
 //check customer email occupied
