@@ -8,12 +8,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-// var collection *mongo.Collection
-
-// func init() {
-// 	collection := Client.Database("eshop").Collection("customers")
-// }
-
 //AddCustomer func
 func AddCustomer(customer *Customer) error {
 	if _, err := readCustomerByEmail(customer.Email); err == nil {

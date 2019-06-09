@@ -19,6 +19,8 @@ func Run() {
 	e.POST("/api/v1/user/register", controller.Register)
 	e.POST("/api/v1/user/login", controller.Login)
 	e.GET("/api/v1/products", controller.GetProducts)
+	e.POST("/api/v1/cart", controller.CreateCart)
+	// e.POST("/api/v1/order", controller.CreateOrder)
 	e.GET("/api/v1/email", controller.SendEmailNotification)
 	// Start server
 	e.Logger.Fatal(e.Start(":8500"))

@@ -13,15 +13,16 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type request struct {
+type customerRequest struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
 	Password string `json:"password"`
 }
 
+//Register func
 func Register(c echo.Context) error {
-	req := &request{}
+	req := &customerRequest{}
 	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -45,8 +46,9 @@ func Register(c echo.Context) error {
 	return c.JSON(http.StatusCreated, "success")
 }
 
+//Login func
 func Login(c echo.Context) error {
-	req := &request{}
+	req := &customerRequest{}
 	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
