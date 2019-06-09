@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+//CreateTestProduct func - expired
 func CreateTestProduct(c echo.Context) error {
 	product := &db.Product{}
 	product.ID = primitive.NewObjectID()
@@ -21,6 +22,7 @@ func CreateTestProduct(c echo.Context) error {
 	return c.JSON(http.StatusCreated, product)
 }
 
+//GetProducts func - all products
 func GetProducts(c echo.Context) error {
 	products, err := db.ReadAllProducts()
 	if err != nil {
