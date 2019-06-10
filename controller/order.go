@@ -40,7 +40,7 @@ func CreateOrder(c echo.Context) error {
 	order.Price = cart.TotalPrice
 	order.Phone = req.Phone
 	order.Address = req.Address
-	order.ShortID = shortID(order.ID) //modify later
+	order.ShortID = shortID(order.ID)
 	order.Paid = false
 	order.Dispatched = false
 	order.Delivered = false
