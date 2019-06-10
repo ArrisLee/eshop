@@ -1,8 +1,11 @@
 package controller
 
 import (
+	"crypto/md5"
 	"eshop/db"
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
@@ -37,7 +40,7 @@ func CreateOrder(c echo.Context) error {
 	order.Price = cart.TotalPrice
 	order.Phone = req.Phone
 	order.Address = req.Address
-	order.ShortID = "TESTX" //modify later
+	order.ShortID = shortID(order.ID) //modify later
 	order.Paid = false
 	order.Dispatched = false
 	order.Delivered = false
@@ -58,4 +61,37 @@ func GetOrders(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, orders)
+}
+
+func shortID(orderID primitive.ObjectID) string {
+	s := orderID.Hex()
+	sMd5 := md5.Sum([]byte(s))
+	inputSlice := []rune(fmt.Sprintf("%x", sMd5)[0:24])
+	var inputInt []int64
+	for i := 0; i < len(s); i = i + 4 {
+		n, _ := strconv.ParseInt(string(inputSlice[i:i+4]), 16, 64)
+		inputInt = append(inputInt, n)
+	}
+	for i, v := range inputInt {
+		inputInt[i] = remainder(v)
+	}
+	table := "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
+	var result string
+	for i := len(inputInt) - 1; i >= 0; i-- {
+		result = result + fmt.Sprintf("%c", table[inputInt[i]])
+	}
+
+	return result
+}
+
+func remainder(n int64) int64 {
+	if n < 32 {
+		return n
+	}
+	var totalRemainder int64
+	for n > 0 {
+		totalRemainder = totalRemainder + n%32
+		n = n / 32
+	}
+	return remainder(totalRemainder)
 }
