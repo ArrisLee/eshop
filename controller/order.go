@@ -47,7 +47,7 @@ func CreateOrder(c echo.Context) error {
 	if err := db.AddOrder(order); err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusCreated, order.ShortID)
+	return c.JSON(http.StatusCreated, order.PaymentID)
 }
 
 //GetOrders func
@@ -61,6 +61,12 @@ func GetOrders(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, orders)
+}
+
+//UpdateOrderPayment func, modify later
+func UpdateOrderPayment(c echo.Context) error {
+	order := &db.Order{}
+	return c.JSON(http.StatusOK, order)
 }
 
 func shortID(orderID primitive.ObjectID) string {

@@ -21,6 +21,7 @@ func Run() {
 	e.GET("/api/v1/products", controller.GetProducts)
 	e.POST("/api/v1/cart", controller.CreateCart)
 	e.POST("/api/v1/order", controller.CreateOrder)
+	e.PUT("/api/v1/order", controller.UpdateOrderPayment)
 	e.GET("/api/v1/orders", controller.GetOrders)
 	e.GET("/api/v1/email", controller.SendEmailNotification)
 	// Start server
