@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"net/http"
+	"strings"
 
 	"eshop/db"
 
@@ -34,7 +35,7 @@ func Register(c echo.Context) error {
 	token := hex.EncodeToString(hasher.Sum(nil))
 	customer := &db.Customer{}
 	customer.ID = primitive.NewObjectID()
-	customer.Email = req.Email
+	customer.Email = strings.ToLower(req.Email)
 	customer.Password = string(hashedBytes)
 	customer.Name = req.Name
 	customer.Token = token
@@ -53,7 +54,7 @@ func Login(c echo.Context) error {
 	if req.Email == "" || req.Password == "" {
 		return c.JSON(http.StatusBadRequest, errors.New("invalid parameters"))
 	}
-	customer, err := db.Authenticate(req.Email, req.Password)
+	customer, err := db.Authenticate(strings.ToLower(req.Email), req.Password)
 	if err != nil {
 		return c.JSON(http.StatusForbidden, err.Error())
 	}
