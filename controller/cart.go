@@ -35,13 +35,14 @@ func CreateCart(c echo.Context) error {
 	}
 	var totalPrice float64
 	for _, p := range products {
+		p.Desc = ""
 		totalPrice += p.Price * float64(productMap[p.ID])
 	}
 	id := c.Request().Header.Get("id")
 	cart := &db.Cart{}
 	cart.CustomerID, _ = primitive.ObjectIDFromHex(id)
 	cart.ID = primitive.NewObjectID()
-	cart.Products = req.Products
+	cart.Products = products
 	fmt.Printf("%.2f", totalPrice)
 	cart.TotalPrice = totalPrice
 	if err := db.AddCart(cart); err != nil {

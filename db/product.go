@@ -45,8 +45,8 @@ func ReadAllProducts() ([]*Product, error) {
 	}
 	for cursor.Next(CTX) {
 		p := &Product{}
-		if err := cursor.Decode(&p); err != nil {
-			log.Fatal(err)
+		if err := cursor.Decode(p); err != nil {
+			return nil, err
 		}
 		products = append(products, p)
 	}
