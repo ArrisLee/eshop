@@ -35,13 +35,13 @@ type Customer struct {
 	Name     string             `json:"name" bson:"name"`
 	Password string             `json:"password" bson:"password"`
 	Email    string             `json:"email" bson:"email"`
-	Phone    string             `json:"phone" bson:"phone"`
 	Token    string             `json:"token" bson:"token"`
 }
 
 //Cart struct
 type Cart struct {
 	ID         primitive.ObjectID `json:"id" bson:"_id"`
+	CustomerID primitive.ObjectID `json:"customerID" bson:"customerID"`
 	Products   []*Product         `json:"products" bson:"products"`
 	TotalPrice float64            `json:"totalPrice" bson:"totalPrice"`
 }
@@ -49,9 +49,11 @@ type Cart struct {
 //Order struct
 type Order struct {
 	ID         primitive.ObjectID `json:"id" bson:"_id"`
-	ShortID    string             `json:"shortID" bson:"shortID"`
-	UserID     primitive.ObjectID `json:"userID" bson:"userID"`
+	CustomerID primitive.ObjectID `json:"customerID" bson:"customerID"`
 	PaymentID  primitive.ObjectID `json:"paymentID" bson:"paymentID"`
+	ShortID    string             `json:"shortID" bson:"shortID"`
+	Address    string             `json:"address" bson:"address"`
+	Phone      string             `json:"phone" bson:"phone"`
 	Cart       *Cart              `json:"cart" bson:"cart"`
 	Price      float64            `json:"price" bson:"price"`
 	Paid       bool               `json:"paid" bson:"paid"`
@@ -61,11 +63,11 @@ type Order struct {
 
 //Payment struct
 type Payment struct {
-	ID      primitive.ObjectID `json:"id" bson:"_id"`
-	OrderID primitive.ObjectID `json:"orderID" bson:"orderID"`
-	UserID  primitive.ObjectID `json:"userID" bson:"userID"`
-	Amount  float64            `json:"amount" bson:"amount"`
-	Success bool               `json:"success" bson:"success"`
+	ID         primitive.ObjectID `json:"id" bson:"_id"`
+	OrderID    primitive.ObjectID `json:"orderID" bson:"orderID"`
+	CustomerID primitive.ObjectID `json:"customerID" bson:"customerID"`
+	Amount     float64            `json:"amount" bson:"amount"`
+	Success    bool               `json:"success" bson:"success"`
 }
 
 func init() {

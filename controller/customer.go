@@ -16,7 +16,6 @@ import (
 type customerRequest struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
-	Phone    string `json:"phone"`
 	Password string `json:"password"`
 }
 
@@ -38,7 +37,6 @@ func Register(c echo.Context) error {
 	customer.Email = req.Email
 	customer.Password = string(hashedBytes)
 	customer.Name = req.Name
-	customer.Phone = req.Phone
 	customer.Token = token
 	if err := db.AddCustomer(customer); err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())

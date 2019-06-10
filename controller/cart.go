@@ -18,6 +18,7 @@ func CreateCart(c echo.Context) error {
 	if !Authorize(c) {
 		return c.JSON(http.StatusUnauthorized, "forbidden")
 	}
+	customerID := c.Request().Header.Get("id")
 	req := &cartRequest{}
 	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
@@ -37,6 +38,7 @@ func CreateCart(c echo.Context) error {
 		totalPrice += p.Price * float64(productMap[p.ID])
 	}
 	cart := db.Cart{}
+	cart.CustomerID, _ = primitive.ObjectIDFromHex(customerID)
 	cart.ID = primitive.NewObjectID()
 	cart.Products = req.products
 	cart.TotalPrice = totalPrice
