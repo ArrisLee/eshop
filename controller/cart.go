@@ -2,7 +2,7 @@ package controller
 
 import (
 	"eshop/db"
-	"log"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -10,7 +10,7 @@ import (
 )
 
 type cartRequest struct {
-	products []*db.Product `json:"products"`
+	Products []*db.Product `json:"products"`
 }
 
 //CreateCart func
@@ -18,14 +18,14 @@ func CreateCart(c echo.Context) error {
 	if !Authorize(c) {
 		return c.JSON(http.StatusUnauthorized, "forbidden")
 	}
-	customerID := c.Request().Header.Get("id")
+
 	req := &cartRequest{}
 	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 	productMap := make(map[primitive.ObjectID]int32)
 	var ids []primitive.ObjectID
-	for _, p := range req.products {
+	for _, p := range req.Products {
 		productMap[p.ID] = p.Quantity
 		ids = append(ids, p.ID)
 	}
@@ -37,11 +37,15 @@ func CreateCart(c echo.Context) error {
 	for _, p := range products {
 		totalPrice += p.Price * float64(productMap[p.ID])
 	}
-	cart := db.Cart{}
-	cart.CustomerID, _ = primitive.ObjectIDFromHex(customerID)
+	id := c.Request().Header.Get("id")
+	cart := &db.Cart{}
+	cart.CustomerID, _ = primitive.ObjectIDFromHex(id)
 	cart.ID = primitive.NewObjectID()
-	cart.Products = req.products
+	cart.Products = req.Products
+	fmt.Printf("%.2f", totalPrice)
 	cart.TotalPrice = totalPrice
-	log.Println(cart)
+	if err := db.AddCart(cart); err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
 	return c.JSON(http.StatusCreated, cart.ID)
 }
