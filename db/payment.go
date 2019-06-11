@@ -30,3 +30,21 @@ func UpdatePaymentResult(paymentID primitive.ObjectID, result bool) error {
 	}
 	return nil
 }
+
+//ReadPaymentsByCustomerID func
+func ReadPaymentsByCustomerID(customerID primitive.ObjectID) ([]*Payment, error) {
+	var payments []*Payment
+	query := bson.M{"customerID": customerID}
+	cursor, err := DB.Collection("payments").Find(CTX, query)
+	if err != nil {
+		return nil, err
+	}
+	for cursor.Next(CTX) {
+		p := &Payment{}
+		if err := cursor.Decode(p); err != nil {
+			return nil, err
+		}
+		payments = append(payments, p)
+	}
+	return payments, nil
+}

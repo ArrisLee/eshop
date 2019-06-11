@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	valid "github.com/asaskevich/govalidator"
 	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -36,6 +37,7 @@ func CreateCart(c echo.Context) error {
 	var totalPrice float64
 	for _, p := range products {
 		p.Desc = ""
+		p.Quantity = productMap[p.ID]
 		totalPrice += p.Price * float64(productMap[p.ID])
 	}
 	id := c.Request().Header.Get("id")
@@ -43,8 +45,8 @@ func CreateCart(c echo.Context) error {
 	cart.CustomerID, _ = primitive.ObjectIDFromHex(id)
 	cart.ID = primitive.NewObjectID()
 	cart.Products = products
-	fmt.Printf("%.2f", totalPrice)
-	cart.TotalPrice = totalPrice
+	fs := fmt.Sprintf("%.2f", totalPrice)
+	cart.TotalPrice, _ = valid.ToFloat(fs)
 	if err := db.AddCart(cart); err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}

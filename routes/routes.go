@@ -22,7 +22,7 @@ func Run() {
 	e.POST("/api/v1/order", controller.CreateOrder)
 	e.POST("/api/v1/payment", controller.MakePayment)
 	e.GET("/api/v1/products", controller.GetProducts)
-	// e.GET("/api/v1/payments", controller.MakePayment)
+	e.GET("/api/v1/payments", controller.GetPayments)
 	e.GET("/api/v1/orders", controller.GetOrders)
 	e.GET("/api/v1/email", controller.SendEmailNotification)
 	// Start server

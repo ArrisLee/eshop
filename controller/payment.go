@@ -29,3 +29,16 @@ func MakePayment(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, "success")
 }
+
+//GetPayments func
+func GetPayments(c echo.Context) error {
+	if !Authorize(c) {
+		return c.JSON(http.StatusUnauthorized, "forbidden")
+	}
+	customerID, _ := primitive.ObjectIDFromHex(c.Request().Header.Get("id"))
+	payments, err := db.ReadPaymentsByCustomerID(customerID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, payments)
+}
