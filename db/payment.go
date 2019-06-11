@@ -17,18 +17,19 @@ func AddPayment(payment *Payment) error {
 }
 
 //UpdatePaymentResult func
-func UpdatePaymentResult(paymentID primitive.ObjectID, result bool) error {
+func UpdatePaymentResult(paymentID primitive.ObjectID, result bool) (*Order, error) {
 	query := bson.M{"_id": paymentID}
 	update := bson.M{"$set": bson.M{"success": result}}
 	log.Println(query, update)
 	_, err := DB.Collection("payments").UpdateOne(CTX, query, update)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	if err := UpdateOrderPayment(paymentID, result); err != nil {
-		return err
+	order, err := UpdateOrderPayment(paymentID, result)
+	if err != nil {
+		return nil, err
 	}
-	return nil
+	return order, nil
 }
 
 //ReadPaymentsByCustomerID func

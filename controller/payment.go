@@ -24,10 +24,11 @@ func MakePayment(c echo.Context) error {
 	}
 	//call stripe here
 	result := true
-	if err := db.UpdatePaymentResult(req.PaymentID, result); err != nil {
+	order, err := db.UpdatePaymentResult(req.PaymentID, result)
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, "success")
+	return c.JSON(http.StatusOK, order)
 }
 
 //GetPayments func

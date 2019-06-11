@@ -33,11 +33,15 @@ func ReadOrdersByCustomerID(customerID primitive.ObjectID) ([]*Order, error) {
 }
 
 //UpdateOrderPayment func
-func UpdateOrderPayment(paymentID primitive.ObjectID, paid bool) error {
+func UpdateOrderPayment(paymentID primitive.ObjectID, paid bool) (*Order, error) {
 	query := bson.M{"paymentID": paymentID}
 	update := bson.M{"$set": bson.M{"paid": paid}}
 	if _, err := DB.Collection("orders").UpdateOne(CTX, query, update); err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	order := &Order{}
+	if err := DB.Collection("orders").FindOne(CTX, query).Decode(order); err != nil {
+		return nil, err
+	}
+	return order, nil
 }
