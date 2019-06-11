@@ -66,6 +66,7 @@ type Payment struct {
 	ID         primitive.ObjectID `json:"id" bson:"_id"`
 	OrderID    primitive.ObjectID `json:"orderID" bson:"orderID"`
 	CustomerID primitive.ObjectID `json:"customerID" bson:"customerID"`
+	Type       string             `json:"type" bson:"type"`
 	Amount     float64            `json:"amount" bson:"amount"`
 	Success    bool               `json:"success" bson:"success"`
 }

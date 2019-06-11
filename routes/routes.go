@@ -18,10 +18,11 @@ func Run() {
 	// Routes
 	e.POST("/api/v1/user/register", controller.Register)
 	e.POST("/api/v1/user/login", controller.Login)
-	e.GET("/api/v1/products", controller.GetProducts)
 	e.POST("/api/v1/cart", controller.CreateCart)
 	e.POST("/api/v1/order", controller.CreateOrder)
-	e.PUT("/api/v1/order", controller.UpdateOrderPayment)
+	e.POST("/api/v1/payment", controller.MakePayment)
+	e.GET("/api/v1/products", controller.GetProducts)
+	// e.GET("/api/v1/payments", controller.MakePayment)
 	e.GET("/api/v1/orders", controller.GetOrders)
 	e.GET("/api/v1/email", controller.SendEmailNotification)
 	// Start server

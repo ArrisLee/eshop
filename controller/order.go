@@ -31,11 +31,11 @@ func CreateOrder(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	//init payment struct here
+	//save order
 	order := &db.Order{}
 	order.ID = primitive.NewObjectID()
 	order.CustomerID, _ = primitive.ObjectIDFromHex(c.Request().Header.Get("id"))
-	order.PaymentID = primitive.NewObjectID() //modify later
+	order.PaymentID = primitive.NewObjectID()
 	order.Cart = cart
 	order.Price = cart.TotalPrice
 	order.Phone = req.Phone
@@ -47,7 +47,18 @@ func CreateOrder(c echo.Context) error {
 	if err := db.AddOrder(order); err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusCreated, order.PaymentID)
+	//init and save payment
+	payment := &db.Payment{}
+	payment.ID = order.PaymentID
+	payment.CustomerID = order.CustomerID
+	payment.OrderID = order.ID
+	payment.Amount = order.Price
+	payment.Type = "card"
+	payment.Success = false
+	if err := db.AddPayment(payment); err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusCreated, payment.ID)
 }
 
 //GetOrders func
@@ -61,12 +72,6 @@ func GetOrders(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, orders)
-}
-
-//UpdateOrderPayment func, modify later
-func UpdateOrderPayment(c echo.Context) error {
-	order := &db.Order{}
-	return c.JSON(http.StatusOK, order)
 }
 
 func shortID(orderID primitive.ObjectID) string {
