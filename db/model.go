@@ -52,6 +52,7 @@ type Order struct {
 	CustomerID primitive.ObjectID `json:"customerID" bson:"customerID"`
 	PaymentID  primitive.ObjectID `json:"paymentID" bson:"paymentID"`
 	ShortID    string             `json:"shortID" bson:"shortID"`
+	Name       string             `json:"name" bson:"name"`
 	Address    string             `json:"address" bson:"address"`
 	Phone      string             `json:"phone" bson:"phone"`
 	Cart       *Cart              `json:"cart" bson:"cart"`

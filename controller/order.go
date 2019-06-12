@@ -38,6 +38,7 @@ func CreateOrder(c echo.Context) error {
 	order.PaymentID = primitive.NewObjectID()
 	order.Cart = cart
 	order.Price = cart.TotalPrice
+	order.Name = req.Name
 	order.Phone = req.Phone
 	order.Address = req.Address
 	order.ShortID = shortID(order.ID)
