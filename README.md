@@ -2,7 +2,7 @@
 
 ## Services
 
-1. local weather forecast API
+1. Yahoo weather forecast API
 
 2. Google location API
 
@@ -20,6 +20,8 @@
 
 9. retrieve all orders via customerID API
 
-10. generate order confirmation E-mail API
+10. retrive all payments via customerID API
 
-11. retrieve payment results via customerID API
+11. generate order confirmation E-mail API
+
+12. MongoDB atlas cluster service
