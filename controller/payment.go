@@ -4,7 +4,10 @@ import (
 	"eshop/db"
 	"net/http"
 
+	stripe "github.com/stripe/stripe-go"
+	"github.com/stripe/stripe-go/charge"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"gopkg.in/mgo.v2/bson"
 
 	"github.com/labstack/echo"
 )
@@ -22,7 +25,21 @@ func MakePayment(c echo.Context) error {
 	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
+	payment, err := db.ReadPayment(req.PaymentID)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
 	//call stripe here
+	stripe.Key = "stripe_test_key"
+	chargeParams := &stripe.ChargeParams{
+		Amount:   stripe.Int64(int64(payment.Amount * 100)),
+		Currency: stripe.String("NZD"),
+		Capture:  stripe.Bool(true),
+	}
+	chargeParams.AddMetadata("payID", payment.ID.Hex())
+	chargeParams.SetSource(req.Source)
+	chargeParams.SetIdempotencyKey(bson.NewObjectId().Hex())
+	go charge.New(chargeParams)
 	result := true
 	order, err := db.UpdatePaymentResult(req.PaymentID, result)
 	if err != nil {

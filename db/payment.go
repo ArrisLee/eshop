@@ -1,8 +1,6 @@
 package db
 
 import (
-	"log"
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -16,11 +14,20 @@ func AddPayment(payment *Payment) error {
 	return nil
 }
 
+//ReadPayment func
+func ReadPayment(id primitive.ObjectID) (*Payment, error) {
+	payment := &Payment{}
+	query := bson.M{"_id": id}
+	if err := DB.Collection("payments").FindOne(CTX, query).Decode(payment); err != nil {
+		return nil, err
+	}
+	return payment, nil
+}
+
 //UpdatePaymentResult func
 func UpdatePaymentResult(paymentID primitive.ObjectID, result bool) (*Order, error) {
 	query := bson.M{"_id": paymentID}
 	update := bson.M{"$set": bson.M{"success": result}}
-	log.Println(query, update)
 	_, err := DB.Collection("payments").UpdateOne(CTX, query, update)
 	if err != nil {
 		return nil, err
