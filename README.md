@@ -1,4 +1,4 @@
-# Eshop APIs demo
+# Eshop demo API
 
 ## Services
 
