@@ -7,7 +7,6 @@ import (
 	stripe "github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/charge"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"gopkg.in/mgo.v2/bson"
 
 	"github.com/labstack/echo"
 )
@@ -38,7 +37,7 @@ func MakePayment(c echo.Context) error {
 	}
 	chargeParams.AddMetadata("payID", payment.ID.Hex())
 	chargeParams.SetSource(req.Source)
-	chargeParams.SetIdempotencyKey(bson.NewObjectId().Hex())
+	chargeParams.SetIdempotencyKey(primitive.NewObjectID().Hex())
 	go charge.New(chargeParams)
 	result := true
 	order, err := db.UpdatePaymentResult(req.PaymentID, result)
