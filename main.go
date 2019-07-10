@@ -1,6 +1,8 @@
 package main
 
-import "eshop/routes"
+import (
+	"eshop/routes"
+)
 
 func main() {
 	routes.Run()
