@@ -1,4 +1,6 @@
-# Eshop demo API
+# Eshop API
+
+## A simple eshop backend service
 
 ## Services
 
