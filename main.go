@@ -1,7 +1,7 @@
 package main
 
 import (
-	"eshop/routes"
+	"github.com/ArrisLee/Eshop/routes"
 )
 
 func main() {

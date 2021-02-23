@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"eshop/db"
+	"github.com/ArrisLee/Eshop/db"
 
 	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/bson/primitive"

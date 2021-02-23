@@ -1,9 +1,10 @@
 package controller
 
 import (
-	"eshop/db"
 	"fmt"
 	"net/http"
+
+	"github.com/ArrisLee/Eshop/db"
 
 	valid "github.com/asaskevich/govalidator"
 	"github.com/labstack/echo"

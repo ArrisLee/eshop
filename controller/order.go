@@ -2,10 +2,11 @@ package controller
 
 import (
 	"crypto/md5"
-	"eshop/db"
 	"fmt"
 	"net/http"
 	"strconv"
+
+	"github.com/ArrisLee/Eshop/db"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 

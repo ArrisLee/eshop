@@ -1,8 +1,9 @@
 package controller
 
 import (
-	"eshop/db"
 	"net/http"
+
+	"github.com/ArrisLee/Eshop/db"
 
 	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
