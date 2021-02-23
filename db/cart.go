@@ -14,6 +14,7 @@ func AddCart(cart *Cart) error {
 	return nil
 }
 
+//ReadCart func
 func ReadCart(id primitive.ObjectID) (*Cart, error) {
 	cart := &Cart{}
 	query := bson.M{"_id": id}
