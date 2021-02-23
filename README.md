@@ -1,6 +1,8 @@
 # Eshop API
 
 ## A simple eshop backend service
+- Echo
+- MongoDB
 
 ## Services
 
