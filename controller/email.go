@@ -13,8 +13,8 @@ func SendEmailNotification(c echo.Context) error {
 	email := c.QueryParam("email")
 	orderNumber := c.QueryParam("order")
 	body := "Hi " + name + ",\n\nHere is your new order: " + orderNumber + ".\nYour goods will be dispatched within 2 working days, we hope you will enjoy it!\n\nBest regards\n\nFresh Team"
-	from := "scorpiolee121@gmail.com"
-	pass := "1987112Leeh33"
+	from := "sample@gmail.com"
+	pass := "password"
 	to := email
 	msg := "From: " + from + "\n" + "To: " + to + "\n" + "Subject: Greetings from Fresh\n" + body
 	err := smtp.SendMail("smtp.gmail.com:587", smtp.PlainAuth("", from, pass, "smtp.gmail.com"), from, []string{to}, []byte(msg))
